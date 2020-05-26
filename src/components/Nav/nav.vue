@@ -66,9 +66,8 @@ export default {
   },
   methods: {
     handleNavChange (item) {
-      console.log(item)
+        //  更新左侧的导航
       this.$store.commit('SET_ROUTERS', item.menuList)
-      console.log(this.$store.state.permission)
     }
   }
 }
