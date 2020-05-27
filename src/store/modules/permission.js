@@ -58,12 +58,17 @@ function filterAsyncRouter (routerMap, roles) {
 const permission = {
   state: {
     routers: constantRouterMap,
-    addRouters: []
+    addRouters: [],
+    initAddRouters: localStorage.getItem('initAddRouters')
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers
       state.routers = constantRouterMap.concat(routers)
+    },
+    initAddRouters: (state, routers) => {
+      state.initAddRouters = routers // 相当是一层缓存 防止在开发时 保存刷新后路由丢失
+      localStorage.setItem('initAddRouters', routers)
     }
   },
   actions: {
@@ -72,6 +77,7 @@ const permission = {
         const { roles } = data
         const accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
         commit('SET_ROUTERS', accessedRouters)
+        commit('initAddRouters', accessedRouters)
         resolve()
       })
     }

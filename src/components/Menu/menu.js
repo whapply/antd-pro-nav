@@ -1,5 +1,6 @@
 import Menu from 'ant-design-vue/es/menu'
 import Icon from 'ant-design-vue/es/icon'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SMenu',
@@ -36,7 +37,8 @@ export default {
       const keys = []
       vm.menu.forEach(item => keys.push(item.path))
       return keys
-    }
+    },
+    ...mapGetters(['addRouters'])
   },
   mounted () {
     this.updateMenu()
@@ -52,6 +54,15 @@ export default {
     },
     $route: function () {
       this.updateMenu()
+    },
+    addRouters: {
+      handler (newVal) {
+        //  默认展开第一个菜单
+        if (newVal.length > 0) {
+          this.openKeys = this.openKeys.concat(newVal[0].path)
+        }
+      },
+      deep: true
     }
   },
   methods: {
